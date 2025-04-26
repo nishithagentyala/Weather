@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-const Api = ({ onWeatherData }) => {
+const Api = ({ onWeatherData, searchCity }) => {
   const name = "Serilingampalle";
 
   useEffect(() => {

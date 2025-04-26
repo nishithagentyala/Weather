@@ -1,1 +1,27 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.weather {
+  text-align: center;
+  margin: 10px;
+}
+.search {
+  width: 80%;
+}
+.name {
+  text-align: left;
+}
 
+.date {
+  text-align: right;
+}
+.date img {
+  right: 0;
+}
+.air {
+  border: 2px solid black;
+  display: grid;
+  grid-template-rows: repeat(20px, 20px);
+}
