@@ -2,21 +2,25 @@ import React, { useState } from "react";
 import Api from "./Api";
 import Button from "./Button";
 import Conditions from "./Conditions";
+import { IoSearchSharp } from "react-icons/io5";
+import WeatherBackground from "./WeatherBackground";
 
 const Home = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [searchCity, setSearchCity] = useState("");
+  const [searchTrigger, setSearchTrigger] = useState("");
   const [temp, setTemp] = useState("C");
   const handleweatherData = (data) => {
     setWeatherData(data);
   };
 
   const iconCode = weatherData?.weather[0].icon;
-  const iconUrl = `http://openweathermap.org/img/wn/${iconCode}@2x.png`;
+  const iconUrl = iconCode
+    ? `http://openweathermap.org/img/wn/${iconCode}@2x.png`
+    : "";
 
   function convertCelsiusorFahrenhiet(val) {
-    if (temp === "C") return val.toFixed(1);
-    else return ((val * 9) / 5 + 32).toFixed(1);
+    return temp === "C" ? val.toFixed(1) : ((val * 9) / 5 + 32).toFixed(1);
   }
 
   function convertTimeStamp(timestamp) {
@@ -26,42 +30,56 @@ const Home = () => {
 
   return (
     <div className="weather">
-      <input
-        type="text"
-        placeholder="Search for cities"
-        className="search"
-        value={searchCity}
-        onChange={(e) => {
-          setSearchCity(e.target.value);
-        }}
-      />
-      <Api onWeatherData={handleweatherData} searchCity={searchCity} />
+      <WeatherBackground weatherData={weatherData} />
+      <div className="input">
+        <input
+          type="text"
+          placeholder="Search for cities"
+          className="search"
+          value={searchCity}
+          onChange={(e) => {
+            setSearchCity(e.target.value);
+          }}
+        />
 
+        <button
+          onClick={() => {
+            setSearchTrigger(searchCity);
+          }}
+        >
+          <IoSearchSharp className="searchicon" style={{ fontSize: "20px" }} />
+        </button>
+      </div>{" "}
+      <Api onWeatherData={handleweatherData} searchCity={searchTrigger} />;
       {weatherData && (
         <div>
-          <span className="name">
-            <h2>{weatherData.name}</h2>
-            <div>
-              <h3>{convertCelsiusorFahrenhiet(weatherData.main.temp)}</h3>
+          <div className="data">
+            <h1>{weatherData.name}</h1>
+            <div className="name">
+              <img src={iconUrl} alt="icon" />
+              <span>
+                <h2>{convertCelsiusorFahrenhiet(weatherData.main.temp)}</h2>
+                <p>{weatherData.weather[0].description}</p>
+              </span>
               <Button
                 name="C"
                 convert={() => {
                   setTemp("C");
                 }}
+                active={temp === "C"}
               />
+              <span>|</span>
               <Button
                 name="F"
                 convert={() => {
                   setTemp("F");
                 }}
+                active={temp === "F"}
               />
             </div>
-          </span>
-          <span className="date">
-            <img src={iconUrl} alt="icon" />
-            <p>{convertTimeStamp(weatherData?.dt)}</p>
-            <p>{weatherData.weather[0].description}</p>
-          </span>
+
+            <h3>{convertTimeStamp(weatherData?.dt)}</h3>
+          </div>
           <Conditions
             weatherData={weatherData}
             convertTimeStamp={convertTimeStamp}

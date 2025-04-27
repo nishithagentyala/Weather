@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 
-const Input = ({ name, convert }) => {
-  return <button onClick={convert}>&#176;{name}</button>;
+const Button = ({ name, convert, active }) => {
+  return (
+    <button onClick={convert} className={active ? "active btn" : "btn"}>
+      &#176;{name}
+    </button>
+  );
 };
 
-export default Input;
+export default Button;

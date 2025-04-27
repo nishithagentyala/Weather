@@ -2,26 +2,164 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 .weather {
   text-align: center;
-  margin: 10px;
+  width: 100vw;
+  max-width: 100%;
+  height: 100vh;
+  background-color: #f0f0f0;
+  transition: background 1s ease-in-out;
+  background-size: cover;
+  background-position: center;
+  filter: blur(0.2);
 }
-.search {
-  width: 80%;
+.clearsky,
+.clouds,
+.haze,
+.rain,
+.snow,
+.sunny,
+.thunderstorm {
+  animation: fadeInBackground 1s forwards;
 }
-.name {
-  text-align: left;
+.clearsky {
+  background: url("../public/images/clearsky.jpg") no-repeat center center/cover;
+}
+.clouds {
+  background: url("../public/images/clouds.jpg") no-repeat center center/cover;
+}
+.haze {
+  background: url("../public/images/haze.jpg") no-repeat center center/cover;
+}
+.rain {
+  background: url("../public/images/rain.avif") no-repeat center center/cover;
+}
+.snow {
+  background: url("../public/images/snow.jpg") no-repeat center center/cover;
+}
+.sunny {
+  background: url("../public/images/sunny.jpg") no-repeat center center/cover;
+}
+.thunderstorm {
+  background: url("../public/images/thunderstorm.jpg") no-repeat center
+    center/cover;
+}
+@keyframes fadeInBackground {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.input {
+  border: 2px solid rgb(226, 207, 207);
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 60%;
+  height: 30px;
+  margin: 0px auto;
+  padding: 10px;
+}
+.search,
+button {
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  color: black;
+  font-size: 15px;
+  font-weight: bold;
 }
 
-.date {
-  text-align: right;
+.btn {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  color: black;
 }
-.date img {
-  right: 0;
+.active {
+  color: white;
 }
-.air {
-  border: 2px solid black;
-  display: grid;
-  grid-template-rows: repeat(20px, 20px);
+
+.name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+}
+
+/* Mobile devices (600px and below) */
+@media (max-width: 600px) {
+  .input {
+    width: 80%; /* Make the input field slightly larger */
+  }
+
+  .name {
+    margin: 3px;
+  }
+
+  .weather {
+    background-position: center;
+  }
+}
+
+/* Medium devices (tablets, 601px to 1024px) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .input {
+    width: 70%; /* Adjust input width for medium devices */
+  }
+
+  .name {
+    margin: 5px;
+  }
+
+  /* Adjust text size */
+  p {
+    font-size: 16px;
+  }
+
+  .weather {
+    background-position: center center;
+  }
+}
+
+/* Large devices (desktops, 1025px and above) */
+@media (min-width: 1025px) {
+  .input {
+    width: 50%; /* Make the input field more narrow on large screens */
+  }
+
+  .name {
+    margin: 20px;
+  }
+
+  /* Adjust weather background for large screens */
+  .weather {
+    height: 100vh;
+  }
+}
+
+/* Extra large screens (1440px and above) */
+@media (min-width: 1440px) {
+  .input {
+    width: 40%; /* Make the input field narrower for larger screens */
+  }
+
+  .name {
+    margin: 30px;
+  }
+
+  /* Ensure weather background covers entire screen */
+  .weather {
+    height: 100vh;
+  }
+
+  p {
+    font-size: 18px;
+  }
 }
