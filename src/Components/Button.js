@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 const Button = ({ name, convert, active }) => {
   return (
