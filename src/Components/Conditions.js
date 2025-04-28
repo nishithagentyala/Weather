@@ -3,41 +3,44 @@ import { WiHumidity, WiBarometer } from "react-icons/wi";
 import { FaTemperatureEmpty, FaWind } from "react-icons/fa6";
 import { BsFillSunriseFill, BsFillSunsetFill } from "react-icons/bs";
 import "./Conditions.css";
-const Conditions = ({ weatherData, convertTimeStamp }) => {
+
+const Conditions = ({ weatherData, formatTimeStamp }) => {
   if (!weatherData) return null;
+  const { main, wind, sys } = weatherData;
+  const { feels_like, humidity, pressure } = main;
+
   return (
     <div className="conditions">
       <div className="air">
         <h3>Air Conditions</h3>
         <div className="air-content">
           <p>
-            <FaTemperatureEmpty /> Feels like:{" "}
-            <span>{weatherData.main.feels_like}</span>
+            <FaTemperatureEmpty /> Feels like:
+            <span>{feels_like}</span>
           </p>
           <p>
             <FaWind />
-            Wind: <span>{weatherData.wind.speed}m/s</span>
+            Wind: <span>{wind?.speed}m/s</span>
           </p>
           <p>
             <WiHumidity />
-            Humidity: <span>{weatherData.main.humidity}%</span>
+            Humidity: <span>{humidity}%</span>
           </p>
           <p>
             <WiBarometer />
-            Pressure:<span> {weatherData.main.pressure} hPa</span>
+            Pressure:<span> {pressure} hPa</span>
           </p>
         </div>
       </div>
       <div className="sun">
         <p>
           <BsFillSunriseFill />
-          Sunrise:{" "}
-          <span> {convertTimeStamp(weatherData.sys.sunrise).slice(10)}</span>
+          Sunrise: <span> {formatTimeStamp(sys.sunrise).slice(10)}</span>
         </p>
         <p>
           <BsFillSunsetFill />
-          Sunset:{" "}
-          <span> {convertTimeStamp(weatherData.sys.sunset).slice(10)}</span>
+          Sunset:
+          <span> {formatTimeStamp(sys.sunset).slice(10)}</span>
         </p>
       </div>
     </div>

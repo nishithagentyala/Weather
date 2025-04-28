@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-const Api = ({ onWeatherData, searchCity }) => {
+const Api = ({ onWeatherData, searchCity, onError }) => {
   useEffect(() => {
     if (!searchCity) return;
     const api_key = process.env.REACT_APP_API_KEY;
@@ -9,14 +9,21 @@ const Api = ({ onWeatherData, searchCity }) => {
           `https://api.openweathermap.org/data/2.5/weather?q=${searchCity}&appid=${api_key}&units=metric`
         );
         const data = await response.json();
-        onWeatherData(data);
+        if (response.ok) {
+          onWeatherData(data);
+          onError(null);
+        } else {
+          onError(data.message);
+          onWeatherData(null);
+        }
       } catch (err) {
-        console.log("Error Occurred: " + err);
+        onError("Network Error");
+        onWeatherData(null);
       }
     };
 
     fetchData();
-  }, [searchCity, onWeatherData]);
+  }, [searchCity, onWeatherData, onError]);
   return null;
 };
 
