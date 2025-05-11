@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Api from "./Api";
 import Button from "./Button";
 import Conditions from "./Conditions";
 import { IoSearchSharp } from "react-icons/io5";
 import WeatherBackground from "./WeatherBackground";
+import { ClipLoader } from "react-spinners";
 
 const Home = () => {
   const [weatherData, setWeatherData] = useState(null);
@@ -11,10 +12,11 @@ const Home = () => {
   const [searchTrigger, setSearchTrigger] = useState("");
   const [temp, setTemp] = useState("C");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleweatherData = (data) => {
+  const handleweatherData = useCallback((data) => {
     setWeatherData(data);
-  };
+  }, []);
 
   const convertCelsiusorFahrenhiet = (val) => {
     return temp === "C" ? val.toFixed(1) : ((val * 9) / 5 + 32).toFixed(1);
@@ -59,46 +61,53 @@ const Home = () => {
           onWeatherData={handleweatherData}
           searchCity={searchTrigger}
           onError={setError}
+          setLoading={setLoading}
         />
         {error && (
           <div className="error-message">
             <p>{error}</p>
           </div>
         )}
-        {weatherData && (
-          <div>
-            <div className="data">
-              <h1>{weatherData.name}</h1>
-              <div className="name">
-                <img src={iconUrl} alt="icon" />
-                <span>
-                  <h2>{convertCelsiusorFahrenhiet(weatherData.main.temp)}</h2>
-                  <p>{weatherData.weather[0].description}</p>
-                </span>
-                <Button
-                  name="C"
-                  convert={() => {
-                    setTemp("C");
-                  }}
-                  active={temp === "C"}
-                />
-                <span>|</span>
-                <Button
-                  name="F"
-                  convert={() => {
-                    setTemp("F");
-                  }}
-                  active={temp === "F"}
-                />
-              </div>
-
-              <h3>{formatTimeStamp(weatherData?.dt)}</h3>
-            </div>
-            <Conditions
-              weatherData={weatherData}
-              formatTimeStamp={formatTimeStamp}
-            />
+        {loading ? (
+          <div className="loader">
+            <ClipLoader color="#3498db" size={40} />
           </div>
+        ) : (
+          weatherData && (
+            <div>
+              <div className="data">
+                <h1>{weatherData.name}</h1>
+                <div className="name">
+                  <img src={iconUrl} alt="icon" />
+                  <span>
+                    <h2>{convertCelsiusorFahrenhiet(weatherData.main.temp)}</h2>
+                    <p>{weatherData.weather[0].description}</p>
+                  </span>
+                  <Button
+                    name="C"
+                    convert={() => {
+                      setTemp("C");
+                    }}
+                    active={temp === "C"}
+                  />
+                  <span>|</span>
+                  <Button
+                    name="F"
+                    convert={() => {
+                      setTemp("F");
+                    }}
+                    active={temp === "F"}
+                  />
+                </div>
+
+                <h3>{formatTimeStamp(weatherData?.dt)}</h3>
+              </div>
+              <Conditions
+                weatherData={weatherData}
+                formatTimeStamp={formatTimeStamp}
+              />
+            </div>
+          )
         )}
       </div>
     </div>
